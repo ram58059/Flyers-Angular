@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="page.component.css">
+  <title>Document</title>
+</head>
+
+<body>
+  <button class='btn1 float' (click)='formClicked()'>
+    <i class="fa fa-plus my-float" style="font-size:27px;color:#040303;"></i>
+  </button>
+
+  <!--************* SUBMIT EVENT ******************-->
+  <div class="was-validated eventForm" *ngIf='formFlag'>
+    <h3>Education</h3>
+
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon3">Event Name </span>
+      </div>
+      <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" [(ngModel)]='formEvent.name'>
+    </div>
+    
+    <div class="mb-3">
+      <label for="validationTextarea">Details</label>
+      <textarea class="form-control is-invalid" id="validationTextarea" placeholder="Required example textarea"
+        required [(ngModel)]='formEvent.detail'></textarea>
+      <div class="invalid-feedback">
+        Please enter a message in the textarea.
+      </div>
+    </div>
+    
+    <label for="basic-url">Location</label>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon3">Place</span>
+      </div>
+      <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" [(ngModel)]='formEvent.location'>
+    </div>
+
+    <label for="basic-url">Choose Image</label>
+    <div class="input-group mb-3">
+      <input type="file" class="form-control" id="basic-url" aria-describedby="basic-addon3" [(ngModel)]='formEvent.img'>
+    </div>
+
+    <label for="basic-url">Map URL</label>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon3">Google Map</span>
+      </div>
+      <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"[(ngModel)]='formEvent.map'>
+    </div>
+
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon3">Date</span>
+      </div>
+      <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" [(ngModel)]='formEvent.date'>
+    </div>
+
+    <input type="submit" value="Submit" (click)='formSubmitClicked()'>
+      
+  </div>
+
+<!-- ********UPDATE EVENT************-->
+
+  <div class="was-validated updateForm" *ngIf='updateFlag'>
+    <h3>Education</h3>
+
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon3">Event Name </span>
+      </div>
+      <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" [(ngModel)]='updateEvent.name'>
+      <input *ngIf='nameFlag' type="button" value='save' (click)='nameClicked()'>
+    </div>
+    
+    <div class="mb-3">
+      <label for="validationTextarea">Details</label>
+      <textarea class="form-control is-invalid" id="validationTextarea" placeholder="Required example textarea"
+        required [(ngModel)]='updateEvent.detail'></textarea>
+      <div class="invalid-feedback">
+        Please enter a message in the textarea.
+      </div>
+      <input *ngIf='detailFlag' type="button" value='save' (click)='detailClicked()'>
+    </div>
+    
+    <label for="basic-url">Location</label>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon3">Place</span>
+      </div>
+      <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" [(ngModel)]='updateEvent.location'>
+      <input *ngIf='locationFlag' type="button" value='save' (click)='locationClicked()'>
+    </div>
+
+    <label for="basic-url">Choose Image</label>
+    <div class="input-group mb-3">
+      <input type="file" class="form-control" id="basic-url" aria-describedby="basic-addon3" [(ngModel)]='updateEvent.img'>
+      <input *ngIf='imgFlag' type="button" value='save' (click)='imgClicked()'>
+    </div>
+
+    <label for="basic-url">Map URL</label>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon3">Google Map</span>
+      </div>
+      <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3"[(ngModel)]='updateEvent.map'>
+      <input *ngIf='mapFlag' type="button" value='save' (click)='mapEditClicked()'>
+    </div>
+
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon3">Date</span>
+      </div>
+      <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" [(ngModel)]='updateEvent.date'>
+      <input *ngIf='dateFlag' type="button" value='save' (click)='dateClicked()'>
+    </div>
+
+    <p style="color: red;">{{alert}}</p>
+    <input type="submit" value="Update" (click)='updateSubmitClicked()'>
+
+      
+  </div>
+  
+  <table >
+    <tr>
+      <td>
+        <div class='rows'>
+          <div class="card mb-3" style="width: 750px; align-items: center; box-shadow: 5px 10px black;" *ngFor="let e of listOfEvents; let i=index">
+            <div class="row no-gutters" >
+              <img src={{e.img}} style='width: 200px; height: 200px;' class="card-img" alt="...">
+
+              <div class="col-md-8">
+                <!-- [ngClass]="{'text-success':present,'text-danger':past,'text-light':future}" -->
+                <div class="card-body">
+                  <h5 class="card-title" contenteditable="true" spellcheck="false">{{e.name}}</h5>
+                  <p class="card-text">{{e.detail}}</p>
+                  <p class="card-text">Place: {{e.location}}</p>
+                  <p class="card-text">Date: {{e.date}}</p>
+                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                  <a href={{map}} target="_blank" style="margin-right: 10px;" (click)='mapClicked(i)'>🌎</a>
+                  <input class="btn btn-outline-dark" type="submit" value="delete" style="margin-right: 10px;" (click)='deleteClicked(i)'>
+                  <input class="btn btn-outline-dark" type="submit" value='update' style="margin-right: 10px;" (click)='updateClicked(i)'>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+</body>
+
+</html>
